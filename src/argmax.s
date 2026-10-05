@@ -15,16 +15,31 @@
 #     this function terminates the program with error code 36
 # =================================================================
 argmax:
+ebreak
     # Prologue
-
-
+    addi t0 x0 1#t0 is idx
+    blt a1 t0 bad
+    lw t1 0(a0)#ti is max_value
+    addi a0 a0 4
+    mv t3 x0 #t3 is answer
+    jal x0 loop_start
+bad:
+    addi a0 x0 36
+    j exit
 loop_start:
-
-
+    bge t0 a1 loop_end
+    lw t2 0(a0)#t2 is compare
+    blt t1 t2 change_idx
 loop_continue:
+    addi t0 t0 1
+    addi a0 a0 4
+    jal x0 loop_start
 
-
+change_idx:
+    mv t3 t0
+    mv t1 t2
+    jal x0 loop_continue
 loop_end:
     # Epilogue
-
+    mv a0 t3
     jr ra
